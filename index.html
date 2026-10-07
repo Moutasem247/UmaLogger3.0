@@ -415,6 +415,9 @@
         <div class="export-btns">
             <button onclick="exportToPNG()">Export PNG</button>
             <button onclick="exportToPDF()">Export PDF</button>
+<button onclick="exportJSON()" style="background: #2b78e4;">Save Project</button>
+            <button onclick="document.getElementById('importFileInput').click()" style="background: #e4782b;">Load Project</button>
+            <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importJSON(event)">
         </div>
     </div>
 
@@ -671,6 +674,74 @@
             pdf.addImage(imgData, 'PNG', 0, 0, canvas.width / 2, canvas.height / 2);
             pdf.save('ChatLog.pdf');
         }
+
+function exportJSON() {
+            const projectData = {
+                eventName: document.getElementById('eventNameInput').value,
+                eventImage: document.getElementById('eventImagePreview').src,
+                charCount: charCount,
+                characters: characters,
+                messages: messages
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `${projectData.eventName || 'ChatLog'}_save.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // Restore state variables
+                    if (data.eventName !== undefined) {
+                        document.getElementById('eventNameInput').value = data.eventName;
+                        updateEventUI();
+                    }
+                    if (data.eventImage) {
+                        document.getElementById('eventImagePreview').src = data.eventImage;
+                    }
+                    if (Array.isArray(data.characters)) {
+                        characters = data.characters;
+                    }
+                    if (Array.isArray(data.messages)) {
+                        messages = data.messages;
+                    }
+                    if (typeof data.charCount === 'number') {
+                        charCount = data.charCount;
+                    }
+
+                    // Refresh UI components
+                    renderCharacterInputs();
+                    updateTalkerRadios();
+                    renderMessages();
+
+                    // Reset edit state if active
+                    editingMessageId = null;
+                    document.getElementById('submitMsgBtn').innerText = "Send Message";
+                    document.getElementById('messageEditor').innerHTML = '';
+
+                    alert("Project loaded successfully!");
+                } catch (err) {
+                    alert("Invalid JSON save file.");
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Clear input so reloading the same file triggers onchange
+            event.target.value = '';
+        }
+
     </script>
 </body>
 </html>
