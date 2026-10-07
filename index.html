@@ -9,14 +9,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        /* تعريف خط RodinPro-DB المحلي */
-        @font-face {
-            font-family: 'RodinPro-DB';
-            src: url('RodinPro-DB.otf') format('opentype'),
-                 url('RodinPro-DB.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
+	@font-face {
+	    font-family: 'CustomFont';
+	    src: url('47211.ttf') format('truetype');
+	    font-weight: normal;
+	    font-style: normal;
+	}
 
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
 
@@ -31,7 +29,7 @@
         }
 
         body {
-            font-family: 'RodinPro-DB', 'Nunito', sans-serif;
+            font-family: 'CustomFont', 'Nunito', sans-serif;
             background-color: #e5e5e5;
             color: var(--text-color);
             margin: 0;
@@ -47,7 +45,7 @@
             background: white;
             padding: 20px;
             border-radius: 12px;
-            width: 400px;
+            width: 500px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -62,7 +60,7 @@
             border: 2px solid #ddd;
             border-radius: 6px;
             box-sizing: border-box;
-            font-family: 'RodinPro-DB', 'Nunito', sans-serif;
+            font-family: 'CustomFont', 'Nunito', sans-serif;
             color: var(--text-color);
             font-weight: 700;
         }
@@ -74,7 +72,7 @@
             padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-family: 'RodinPro-DB', 'Nunito', sans-serif;
+            font-family: 'CustomFont', 'Nunito', sans-serif;
             font-weight: 700;
             transition: 0.2s;
         }
@@ -91,7 +89,7 @@
 	.editor {
             width: 100%; height: 80px; border: 2px solid #ddd; border-radius: 6px;
             padding: 10px; box-sizing: border-box; overflow-y: auto; background: white;
-            font-size: 1.15rem;
+            font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.4;
         }
@@ -104,7 +102,7 @@
 
         /* --- PREVIEW SECTION (RIGHT PANEL) --- */
         .preview-wrapper {
-            width: 450px;
+            width: 500px;
             background: var(--log-bg);
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
@@ -166,7 +164,7 @@
         
         .event-title-text {
             color: #ffffff;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             z-index: 1;
             flex: 1;
@@ -236,7 +234,7 @@
         }
         
         .message-avatar-container {
-            width: 50px;
+            width: 60px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -244,8 +242,8 @@
         }
         
         .message-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
             border: 2px solid white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
@@ -260,11 +258,11 @@
         .message-content {
             display: flex;
             flex-direction: column;
-            max-width: 320px;
+            max-width: 450px;
         }
 
 	.message-name {
-            font-size: 1.25rem;
+            font-size: 0.85rem;
             font-weight: 800;
             margin-bottom: 8px;
             padding-bottom: 8px;
@@ -281,7 +279,7 @@
             position: relative;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             word-wrap: break-word;
-            font-size: 1.15rem;
+            font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.4;
         }
@@ -349,7 +347,7 @@
             background: linear-gradient(to bottom right, var(--close-top), var(--close-bottom));
             border: 1px solid #c9c7ce;
             color: var(--text-color);
-            font-size: 1.1rem;
+            font-size: 1rem;
             padding: 10px 40px;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -401,7 +399,7 @@
 	    <!-- ADDED: Font Family Dropdown -->
 	    <select onchange="document.execCommand('fontName', false, this.value)" title="Font">
 	        <option value="">Font</option>
-	        <option value="RodinPro-DB">RodinPro-DB</option>
+	        <option value="CustomFont">CustomFont</option>
 	        <option value="Nunito">Nunito</option>
 	        <option value="Arial">Arial</option>
 	        <option value="Courier New">Courier</option>
@@ -451,12 +449,19 @@
         
         const DEFAULT_PNG = "default.jpg";
 
-        window.onload = () => {
-            addCharacterField("Mill Wakaba");
-            addCharacterField("Selection");
-            updateTalkerRadios();
-        };
+	window.onload = () => {
+ 	   addCharacterField("Mill Wakaba");
+	    addCharacterField("Selection");
+	    updateTalkerRadios();
 
+	    // Submit message on Enter (Shift+Enter for line breaks)
+	    document.getElementById('messageEditor').addEventListener('keydown', (e) => {
+	        if (e.key === 'Enter' && !e.shiftKey) {
+	            e.preventDefault();
+	            submitMessage();
+	        }
+	    });
+	};
         function updateEventUI() {
             document.getElementById('eventTitlePreview').innerText = document.getElementById('eventNameInput').value;
         }
