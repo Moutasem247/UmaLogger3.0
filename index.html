@@ -92,6 +92,14 @@
             font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.4;
+	.toolbar .color-swatch {
+	    width: 24px;
+	    height: 24px;
+	    border-radius: 4px;
+	    border: 1px solid rgba(0, 0, 0, 0.2);
+	    padding: 0;
+	    cursor: pointer;
+}
         }
         .editor b, .editor strong, .editor [style*="font-weight"] {
             font-weight: 900 !important;
@@ -99,6 +107,15 @@
         }
 
         .radio-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; max-height: 120px; overflow-y: auto;}
+
+	.toolbar .color-btn {
+	    width: 24px;
+	    height: 24px;
+	    padding: 0;
+	    border: 1px solid rgba(0, 0, 0, 0.2);
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
 
         /* --- PREVIEW SECTION (RIGHT PANEL) --- */
         .preview-wrapper {
@@ -379,33 +396,40 @@
             <div class="radio-group" id="talkerRadios"></div>
 
             <label style="margin-top:10px;">Message Body:</label>
-	<div class="toolbar">
-	    <button onclick="document.execCommand('bold', false, null)" title="Bold"><b>B</b></button>
-	    <button onclick="document.execCommand('italic', false, null)" title="Italic"><i>I</i></button>
-	    <input type="color" id="textColor" onchange="document.execCommand('foreColor', false, this.value)" title="Text Color">
-    
-	    <!-- ADDED: Text Size Dropdown -->
-	    <select onchange="document.execCommand('fontSize', false, this.value)" title="Text Size">
-	        <option value="">Size</option>
-	        <option value="1">Smallest</option>
-	        <option value="2">Small</option>
-	        <option value="3">Normal</option>
-	        <option value="4">Large</option>
-	        <option value="5">Larger</option>
-	        <option value="6">Huge</option>
-	        <option value="7">Maximum</option>
-	    </select>
+<div class="toolbar">
+    <button onclick="document.execCommand('bold', false, null)" title="Bold"><b>B</b></button>
+    <button onclick="document.execCommand('italic', false, null)" title="Italic"><i>I</i></button>
+    <input type="color" id="textColor" onchange="document.execCommand('foreColor', false, this.value)" title="Custom Text Color">
 
-	    <!-- ADDED: Font Family Dropdown -->
-	    <select onchange="document.execCommand('fontName', false, this.value)" title="Font">
-	        <option value="">Font</option>
-	        <option value="CustomFont">CustomFont</option>
-	        <option value="Nunito">Nunito</option>
-	        <option value="Arial">Arial</option>
-	        <option value="Courier New">Courier</option>
-	        <option value="Times New Roman">Times</option>
-	    </select>
-	</div>
+    <!-- Preset Color Buttons -->
+    <button class="color-btn" style="background-color: #00bf32;" onmousedown="event.preventDefault()" onclick="document.execCommand('foreColor', false, '#00bf32')" title="Green"></button>
+    <button class="color-btn" style="background-color: #dd688b;" onmousedown="event.preventDefault()" onclick="document.execCommand('foreColor', false, '#dd688b')" title="Pink"></button>
+    <button class="color-btn" style="background-color: #3a79e2;" onmousedown="event.preventDefault()" onclick="document.execCommand('foreColor', false, '#3a79e2')" title="Blue"></button>
+    <button class="color-btn" style="background-color: #ef6d26;" onmousedown="event.preventDefault()" onclick="document.execCommand('foreColor', false, '#ef6d26')" title="Orange"></button>
+
+    <!-- Text Size Dropdown -->
+    <select onchange="document.execCommand('fontSize', false, this.value)" title="Text Size">
+        <option value="">Size</option>
+        <option value="1">Smallest</option>
+        <option value="2">Small</option>
+        <option value="3">Normal</option>
+        <option value="4">Large</option>
+        <option value="5">Larger</option>
+        <option value="6">Huge</option>
+        <option value="7">Maximum</option>
+    </select>
+
+    <!-- Font Family Dropdown -->
+    <select onchange="document.execCommand('fontName', false, this.value)" title="Font">
+        <option value="">Font</option>
+        <option value="CustomFont">CustomFont</option>
+        <option value="Nunito">Nunito</option>
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier</option>
+        <option value="Times New Roman">Times</option>
+    </select>
+</div>
+
             <div class="editor" id="messageEditor" contenteditable="true"></div>
             
             <button onclick="submitMessage()" style="margin-top:10px; width: 100%;" id="submitMsgBtn">Send Message</button>
